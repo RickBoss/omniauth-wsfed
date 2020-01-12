@@ -60,7 +60,6 @@ module OmniAuth
             fingerprint = Digest::SHA1.hexdigest(cert.to_der)
 
             if fingerprint != idp_cert_fingerprint.gsub(/[^a-zA-Z0-9]/,"").downcase
-              params[:fingerprint] = fingerprint
               return soft ? false : (raise OmniAuth::Strategies::WSFed::ValidationError.new("Fingerprint mismatch"))
 
             end
