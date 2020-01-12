@@ -51,7 +51,7 @@ module OmniAuth
           def validate(idp_cert_fingerprint, soft = true)
             # get cert from response
             #base64_cert = self.elements["//ds:X509Certificate"].text
-            base64_cert = self.elements["X509Certificate"].text
+            base64_cert = self.elements["/X509Certificate"].text
 
             cert_text   = Base64.decode64(base64_cert)
             cert        = OpenSSL::X509::Certificate.new(cert_text)
@@ -60,7 +60,9 @@ module OmniAuth
             fingerprint = Digest::SHA1.hexdigest(cert.to_der)
 
             if fingerprint != idp_cert_fingerprint.gsub(/[^a-zA-Z0-9]/,"").downcase
+              print fingerprint
               return soft ? false : (raise OmniAuth::Strategies::WSFed::ValidationError.new("Fingerprint mismatch"))
+
             end
 
             validate_doc(base64_cert, soft)
